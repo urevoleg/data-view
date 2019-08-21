@@ -20,6 +20,8 @@ Top-5 elements of categorical signs
 
 Usage
 -----
+Warning: using only from jupyter notebook (function view using IPython.display)
+
 	$ pip install data_view
 
     $ python3

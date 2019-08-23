@@ -19,7 +19,7 @@ Module, provides the function _view_, which displays general information on the 
   - grid of histograms 
   - Top-5 of the most frequent categorical signs (for each)
 
- Parameters (function view):
+Parameters (function view):
  * d - table with data
  * only_numeric - True / False, default: True. True - information output only by numerical signs, False - information output by numerical and categorical signs.
  * full_stats - True / False, default: False. False - output information on numerical characteristics without interquartile range, data boundaries without outliers, True - complete output with data character.
@@ -31,9 +31,12 @@ Top-5 elements of categorical signs
   - __name_ - category name
   - __count_ - number of elements in this category If there are less than 5 elements in the attribute, then the values ​​in the _count field are filled -1
 
+Install
+-------
+	$ pip install data_view
+
 Usage
 -----
-	$ pip install data_view
 
     $ python3
 

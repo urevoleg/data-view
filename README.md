@@ -40,8 +40,6 @@ splitplot(d=None, y=None, hue=None, figsize=(8, 8), **kwargs):
  - hue - category feature for dividing y for some subsets
  - figsize - size of plot figure
  - **kwargs - kwargs of seaborn distplot
-    
-    - 
 
 Install
 -------
@@ -68,8 +66,8 @@ Usage
     
     splitplot(iris, y='petal length (cm)', hue='species', hist=True, bins=15, figsize=(10, 10))
     
-    ![Petal length distplot with hist](iris_splitplot_2.png)
+![Petal length distplot with hist](iris_splitplot_1.png)
     
     splitplot(iris, y='sepal length (cm)', hue='species', hist=False, bins=15, figsize=(10, 10))
     
-    ![Sepal length distplot without hist](iris_splitplot_2.png)
+![Sepal length distplot without hist](iris_splitplot_2.png)

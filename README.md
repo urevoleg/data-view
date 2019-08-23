@@ -37,12 +37,9 @@ Usage
 
     $ python3
 
-	import pandas as pd
-
-	import numpy as np
-
-    from data_view import view
+    from data_view import *
 
     d = pd.DataFrame(np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), columns=['a', 'b', 'c'])
 
     view(d, only_numeric=True, histograms=False)
+

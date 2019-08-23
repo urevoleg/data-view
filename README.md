@@ -8,6 +8,7 @@ Requirements
 * numpy >= 1.16
 * pandas >= 0.23
 * matplotlib >= 3.02
+* seaborn >= 0.9.0
 * IPython >= 7.2.0
 
 ------------
@@ -19,7 +20,7 @@ Module, provides the function _view_, which displays general information on the 
   - grid of histograms 
   - Top-5 of the most frequent categorical signs (for each)
 
- Parameters (function view):
+Parameters (function view):
  * d - table with data
  * only_numeric - True / False, default: True. True - information output only by numerical signs, False - information output by numerical and categorical signs.
  * full_stats - True / False, default: False. False - output information on numerical characteristics without interquartile range, data boundaries without outliers, True - complete output with data character.
@@ -31,9 +32,23 @@ Top-5 elements of categorical signs
   - __name_ - category name
   - __count_ - number of elements in this category If there are less than 5 elements in the attribute, then the values ​​in the _count field are filled -1
 
+Also func splitplot - plotting distplot for any feature dividing by category feature.
+    
+splitplot(d=None, y=None, hue=None, figsize=(8, 8), **kwargs):
+ - d - dataset
+ - y - values for plotting distplot
+ - hue - category feature for dividing y for some subsets
+ - figsize - size of plot figure
+ - **kwargs - kwargs of seaborn distplot
+    
+    - 
+
+Install
+-------
+	$ pip install data_view
+
 Usage
 -----
-	$ pip install data_view
 
     $ python3
 
@@ -43,3 +58,18 @@ Usage
 
     view(d, only_numeric=True, histograms=False)
 
+    # loads iris dataset
+    
+    from sklearn import datasets
+    
+    iris_load = datasets.load_iris()
+    iris = pd.DataFrame(iris_load.data, columns=iris_load.feature_names)
+    iris['species'] = iris_load.target
+    
+    splitplot(iris, y='petal length (cm)', hue='species', hist=True, bins=15, figsize=(10, 10))
+    
+    ![Petal length distplot with hist](iris_splitplot_2.png)
+    
+    splitplot(iris, y='sepal length (cm)', hue='species', hist=False, bins=15, figsize=(10, 10))
+    
+    ![Sepal length distplot without hist](iris_splitplot_2.png)

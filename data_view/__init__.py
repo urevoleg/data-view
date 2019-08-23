@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib import colors as mcolors
 from IPython.display import display, HTML
 
 def splitter(simbol='-', amount=100):
@@ -107,3 +109,18 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
             display(HTML(temp.to_html()))
     else:
         print("В данных нет категориальных признаков!")
+
+color_base = list(mcolors.BASE_COLORS)
+
+def baseplot(s, color=None, label=None, **kwargs):
+    sns.distplot(s, color=color, label=label, **kwargs)
+    plt.grid(True)
+
+def splitplot(d=None, y=None, hue=None, figsize=(8, 8), **kwargs):
+    plt.figure(figsize=figsize)
+    if hue != None:
+        for idx, col_hue in enumerate(d[hue].unique()):
+            baseplot(d[d[hue] == col_hue][y].dropna(),
+                       color=color_base[idx%len(color_base)], label=col_hue, **kwargs)
+    plt.legend()
+    plt.show()

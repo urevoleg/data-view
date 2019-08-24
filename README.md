@@ -15,14 +15,14 @@ Requirements
 Module, provides the function _view_, which displays general information on the data:
   - Result of method info()
   - Result of method describe()
-  - for numeric / categorical signs - The number of missions in the data (number and percentage for each column)
+  - for numeric / categorical features - The number of nulls in the data (number and percentage for each column)
   - grid of histograms 
-  - Top-5 of the most frequent categorical signs (for each)
+  - Top-5 of the most frequent categorical features (for each)
 
 Parameters (function view):
  * d - table with data
- * only_numeric - True / False, default: True. True - information output only by numerical signs, False - information output by numerical and categorical signs.
- * full_stats - True / False, default: False. False - output information on numerical characteristics without interquartile range, data boundaries without outliers, True - complete output with data character.
+ * only_numeric - True / False, default: True. True - information output only by numerical features, False - information output by numerical and categorical features.
+ * full_stats - True / False, default: False. False - output information on numerical features without interquartile range, data boundaries without outliers, True - complete output with IQR, min and max by IQR and amount of outliers.
  * histograms - True / False, default: True. True - output with building histograms for numerical signs, False - without building histograms
 
 Top-5 elements of categorical signs

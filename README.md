@@ -16,7 +16,7 @@ Module, provides the function _view_, which displays general information on the 
   - Result of method info()
   - Result of method describe()
   - for numeric / categorical variables - The number of nulls in the data (amount and percentage for each column)
-  - grid of histograms 
+  - grid of histograms for numeric variables
   - Top-5 of the most frequent categorical variables (for each)
 
 Parameters (function view):

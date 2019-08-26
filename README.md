@@ -27,7 +27,7 @@ Parameters (function view):
 
 Top-5 elements of categorical variables
 
- The postfix (_name / _count) is assigned to the name of the data column to create top-5 elements table. :
+ The postfix (_name / _count) is assigned to the name of the data column to create top-5 elements table:
   - __name_ - category name
   - __count_ - number of unique elements in this category. If there are less than 5 unique elements, then the values ​​in the _count field are filled -1
 

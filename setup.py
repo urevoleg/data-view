@@ -5,15 +5,15 @@ with open("README.md", "r") as fh:
 
 setup(
      name='data-view',  
-     version='0.0.6',
+     version='0.1.0',
      author="Urev Oleg",
      author_email="urevolegg@gmail.com",
-     description="A first view of datasets",
+     description="Automated view of dataset",
      long_description=long_description,
      long_description_content_type="text/markdown",
      packages=find_packages(),
      classifiers=[
-         "Programming Language :: Python :: 3",
+         "Programming Language :: Python :: 3.6",
          "License :: OSI Approved :: MIT License",
          "Operating System :: OS Independent",
      ],

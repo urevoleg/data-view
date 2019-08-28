@@ -31,7 +31,6 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
                         'Рекомендуемый тип':'datetime или int'}
             data_types = data_types.append(pd.DataFrame.from_dict(temp, orient='index').T)
         if 'year' in col.lower() or 'month' in col.lower() or 'day' in col.lower() or 'id' in col.lower() or 'uuid' in col.lower():
-            filter_columns.append(col)
             temp = {'Имя':col, 
                         'Текущий тип':d[col].dtypes,
                         'Рекомендуемый тип':'int'}
@@ -78,8 +77,11 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
     if histograms:
         print('\n\033[1mГистограммы числовых показателей\033[0m')
         splitter()
-        d_without_date_id.select_dtypes(include=np.number).hist(figsize = (12, 12), bins = 20, color='#00ffea', alpha=0.75)
-        plt.show()
+        if d_without_date_id.select_dtypes(np.number).shape[1] != 0:
+            d_without_date_id.select_dtypes(include=np.number).hist(figsize = (12, 12), bins = 20, color='#00ffea', alpha=0.75)
+            plt.show()
+        else:
+            print("В данных нет числовых признаков по которым возможно построить гистограмму!")
     
     print("\n\033[1mОписательные статистики категориальных признаков\033[0m")
     splitter()

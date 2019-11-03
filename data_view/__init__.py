@@ -4,9 +4,21 @@ import matplotlib.pyplot as plt
 from IPython.display import display, HTML
 
 def splitter(simbol='-', amount=100):
-	print(amount*simbol)
+    """
+    :param simbol: Simbol for separate out of display function in view
+    :param amount: Amount of simbol
+    :return: None
+    """
+    print(amount*simbol)
 
 def view(d, only_numeric=True, full_stats=False, histograms=True):
+    """
+    :param d: Dataset
+    :param only_numeric: True - statistic only about numeric columns, False - about all columns
+    :param full_stats: Show all statistic result (add IQR and min max with 25 and 75 percentile with 1.5*IQR)
+    :param histograms: Show or not histograms
+    :return: None
+    """
 
     print("\033[1mРазмер данных:\033[0m {}".format(d.shape))
     

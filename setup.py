@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
      name='data-view',  
-     version='0.1.0',
+     version='0.1.1',
      author="Urev Oleg",
      author_email="urevolegg@gmail.com",
      description="Automated view of dataset",

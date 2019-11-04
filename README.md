@@ -18,6 +18,8 @@ Module, provides the function _view_, which displays general information on the 
   - for numeric / categorical variables - The number of nulls in the data (amount and percentage for each column)
   - grid of histograms for numeric variables
   - Top-5 of the most frequent categorical variables (for each)
+  - Split count statistic by category with less 5 unique values
+  - matrix correlation
 
 Parameters (function view):
  * d - table with data
@@ -30,6 +32,12 @@ Top-5 elements of categorical variables
  The postfix (_name / _count) is assigned to the name of the data column to create top-5 elements table:
   - __name_ - category name
   - __count_ - number of unique elements in this category. If there are less than 5 unique elements, then the values ​​in the _count field are filled -1
+
+Count statistic of numbers variables split by some categorical variables
+ - if number of unique elements in category variable less 5, then show count statistic
+
+Correlation matrix
+ - Correlation matrix with heatmap (pearson corr index)
 
 Install
 -------

@@ -78,7 +78,9 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
     numbers_of_nulls = pd.DataFrame(columns=['Имя'], data=d.columns)
     numbers_of_nulls['Пропуски'] = d.isnull().sum().values
     numbers_of_nulls['Пропуски, %'] = 100 * d.isnull().sum().values / d.shape[0]
-    display(HTML(numbers_of_nulls.set_index('Имя').to_html()))
+    cm = sns.light_palette("green", as_cmap=True)
+    numbers_of_nulls_html = numbers_of_nulls.sort_values(by='Пропуски, %').set_index('Имя').style.background_gradient(cmap=cm, axis=0).render()
+    display(HTML(numbers_of_nulls_html))
 
     print("\n\033[1mКол-во дубликатов в данных\033[0m")
     splitter()
@@ -104,20 +106,18 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
             display(HTML(dsc.to_html()))
         else:
             display(HTML(dsc.drop(['min_out', 'max_out', 'IQR'], axis=1).to_html()))
-
-        if histograms:
-            print('\n\033[1mГистограммы числовых показателей\033[0m')
-            splitter()
-            if d_without_date_id.select_dtypes(np.number).shape[1] != 0:
-                d_without_date_id.select_dtypes(include=np.number).hist(figsize=(12, 12), bins=20, color='#00ffea',
-                                                                        alpha=0.75)
-                plt.show()
-            else:
-                print("В данных нет числовых признаков по которым возможно построить гистограмму!")
     else:
         print("В данных нет числовых признаков!")
 
-
+    if histograms:
+        print('\n\033[1mГистограммы числовых показателей\033[0m')
+        splitter()
+        if d_without_date_id.select_dtypes(np.number).shape[1] != 0:
+            d_without_date_id.select_dtypes(include=np.number).hist(figsize=(12, 12), bins=20, color='#00ffea',
+                                                                    alpha=0.75)
+            plt.show()
+        else:
+            print("В данных нет числовых признаков по которым возможно построить гистограмму!")
 
     category_columns_less5 = []
     print("\n\033[1mОписательные статистики категориальных признаков\033[0m")

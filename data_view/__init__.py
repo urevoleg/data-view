@@ -4,6 +4,22 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from IPython.display import display, HTML
 
+def colored_values(val):
+        """
+        Takes a scalar and returns a string with
+        the css property `'color: red'` for negative
+        strings, black otherwise.
+        """
+        if val >= 0.9:
+            color = 'red'
+        elif val < 0.9 and val > 0.7:
+            color = 'orange'
+        elif val <= -0.9:
+            color = '#0000FF'
+        else:
+            color = '#87CEFA'
+
+        return 'color: %s' % color
 
 def splitter(simbol='-', amount=100):
     """
@@ -112,7 +128,9 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
                 # выбираем только топ-5
                 t = d[col].value_counts()[:5]
                 if t.shape[0] < 5:
-                    category_columns_less5.append(col)
+                    # в разбивку по категориям добавляем только те признаки, в которых 2 и более уникальных значения, но < 5
+                    if t.shape[0] > 1:
+                        category_columns_less5.append(col)
                     # заполням -1 если элементов не хватает до 5
                     for _ in range(5 - t.shape[0]):
                         t = t.append(pd.Series([-1]))
@@ -161,5 +179,16 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
 
     splitter()
     cm = sns.light_palette("green", as_cmap=True)
-    corr_html = d.corr().style.background_gradient(cmap=cm, axis=1).render()
+    corr_html = d.corr().fillna(0).style.background_gradient(cmap=cm, axis=1).render()
+    # общая матрица корреляций
     display(HTML(corr_html))
+    # фильтрованный вывод максимальных корреляций
+    t = d.corr().fillna(0).unstack().reset_index()
+    t.columns = ['Признак 1', 'Признак 2', 'r']
+    if not t[(np.fabs(t['r']) > 0.7) & (t['r'] != 1.0)].empty:
+        indexes = t[(np.fabs(t['r']) > 0.7) & (t['r'] != 1.0)][['Признак 1', 'Признак 2']]\
+            .apply(lambda row: hash(row['Признак 1']) + hash(row['Признак 2']), axis=1).drop_duplicates().index
+
+        print("\n\n\033[1mСписок корреляицй больших 0.7\033[0m")
+        display(HTML(t.iloc[indexes].sort_values(by='r', ascending=False)\
+                     .style.applymap(colored_values, subset='r').render()))

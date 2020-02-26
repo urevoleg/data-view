@@ -20,6 +20,7 @@ Module, provides the function _view_, which displays general information on the 
   - Top-5 of the most frequent categorical variables (for each)
   - Split count statistic by category with less 5 unique values
   - matrix correlation
+  - dataframe of higher correlation pair (over 0.7)
 
 Parameters (function view):
  * d - table with data

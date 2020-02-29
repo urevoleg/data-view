@@ -191,6 +191,6 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
         indexes = t[(np.fabs(t['r']) > 0.7) & (t['r'] != 1.0)][['Признак 1', 'Признак 2']]\
             .apply(lambda row: hash(row['Признак 1']) + hash(row['Признак 2']), axis=1).drop_duplicates().index
 
-        print("\n\n\033[1mСписок корреляицй больших 0.7\033[0m")
+        print("\n\n\033[1mСписок корреляций больших 0.7\033[0m")
         display(HTML(t.iloc[indexes].sort_values(by='r', ascending=False)\
                      .style.applymap(colored_values, subset='r').render()))

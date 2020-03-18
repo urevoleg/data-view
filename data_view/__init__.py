@@ -42,9 +42,10 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
 
     print("\033[1mРазмер данных:\033[0m {}".format(d.shape))
 
-    print("\n\033[1mОбзор первых строк данных\033[0m")
+    print("\n\033[1mОбзор первых/последних строк данных\033[0m")
     splitter()
-    display(HTML(d.head().to_html()))
+    # объединяем первые 5 и последние 5 строк данных и выводим
+    display(HTML(pd.concat([d.head(), d.tail()]).to_html()))
 
     print("\n\033[1mТипы данных и кол-во непустых строк\033[0m")
     splitter()
@@ -119,62 +120,63 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
         else:
             print("В данных нет числовых признаков по которым возможно построить гистограмму!")
 
-    category_columns_less5 = []
-    print("\n\033[1mОписательные статистики категориальных признаков\033[0m")
-    splitter()
-    if d.select_dtypes('object').shape[1] != 0:
-        if not only_numeric:
-            temp = pd.DataFrame()
-            for col in d.select_dtypes('object').columns:
-                # подсчет числа каждого уникального элемента и сортировка по убыванию
-                # выбираем только топ-5
-                t = d[col].value_counts()[:5]
-                if t.shape[0] < 5:
-                    # в разбивку по категориям добавляем только те признаки, в которых 2 и более уникальных значения, но < 5
-                    if t.shape[0] > 1:
-                        category_columns_less5.append(col)
-                    # заполням -1 если элементов не хватает до 5
-                    for _ in range(5 - t.shape[0]):
-                        t = t.append(pd.Series([-1]))
-                # формируем таблицу
-                temp[col + '_name'] = t.index
-                temp[col + '_count'] = t.values
+    if not only_numeric:
+        category_columns_less5 = []
+        print("\n\033[1mОписательные статистики категориальных признаков\033[0m")
+        splitter()
+        if d.select_dtypes('object').shape[1] != 0:
+            if not only_numeric:
+                temp = pd.DataFrame()
+                for col in d.select_dtypes('object').columns:
+                    # подсчет числа каждого уникального элемента и сортировка по убыванию
+                    # выбираем только топ-5
+                    t = d[col].value_counts()[:5]
+                    if t.shape[0] < 5:
+                        # в разбивку по категориям добавляем только те признаки, в которых 2 и более уникальных значения, но < 5
+                        if t.shape[0] > 1:
+                            category_columns_less5.append(col)
+                        # заполням -1 если элементов не хватает до 5
+                        for _ in range(5 - t.shape[0]):
+                            t = t.append(pd.Series([-1]))
+                    # формируем таблицу
+                    temp[col + '_name'] = t.index
+                    temp[col + '_count'] = t.values
 
-            # вывод метода describe для категориальнх элементов
-            dsc = d.describe(exclude=np.number).T
-            display(HTML(dsc.to_html()))
-            # вывод таблицы с топ-5 каждого категориального элемента
-            print("\n\n\033[1mТоп-5 уникального категориального признака\033[0m")
-            splitter()
-            display(HTML(temp.to_html()))
+                # вывод метода describe для категориальнх элементов
+                dsc = d.describe(exclude=np.number).T
+                display(HTML(dsc.to_html()))
+                # вывод таблицы с топ-5 каждого категориального элемента
+                print("\n\n\033[1mТоп-5 уникального категориального признака\033[0m")
+                splitter()
+                display(HTML(temp.to_html()))
 
-            # 1. Построить гистограммы числовых признаков, разделенные по категориальным переменным,
-            # если количество уникальных значений не более 5, например
-            print("\n\n\033[1mСтатистики при группировке по некоторым категориям\033[0m")
-            splitter()
-            if len(category_columns_less5) != 0:
-                columns_to_split_by_category = d_without_date_id \
-                    .drop(category_columns_less5, axis=1) \
-                    .select_dtypes(np.number).columns
+                # 1. Построить гистограммы числовых признаков, разделенные по категориальным переменным,
+                # если количество уникальных значений не более 5, например
+                print("\n\n\033[1mСтатистики при группировке по некоторым категориям\033[0m")
+                splitter()
+                if len(category_columns_less5) != 0:
+                    columns_to_split_by_category = d_without_date_id \
+                        .drop(category_columns_less5, axis=1) \
+                        .select_dtypes(np.number).columns
 
-                for group in category_columns_less5:
-                    if len(columns_to_split_by_category) != 0:
-                        print(f'Группировка по: {group}')
-                        temp = d_without_date_id.pivot_table(
-                            index=group,
-                            values=columns_to_split_by_category,
-                            aggfunc='count'
-                        )
-                        display(temp)
-                    else:
-                        print(f'Нет признаков по которым можно рассчитать статистики!')
-                        break
-            else:
-                print('Категориальные признаки содержат более 5 уникальных элементов!')
+                    for group in category_columns_less5:
+                        if len(columns_to_split_by_category) != 0:
+                            print(f'Группировка по: {group}')
+                            temp = d_without_date_id.pivot_table(
+                                index=group,
+                                values=columns_to_split_by_category,
+                                aggfunc='count'
+                            )
+                            display(temp)
+                        else:
+                            print(f'Нет признаков по которым можно рассчитать статистики!')
+                            break
+                else:
+                    print('Категориальные признаки содержат более 5 уникальных элементов!')
 
 
-    else:
-        print("В данных нет категориальных признаков!")
+        else:
+            print("В данных нет категориальных признаков!")
 
     # 1. Матрица корреляций - heatmap
     print("\n\n\033[1mМатрица корреляций\033[0m")
@@ -192,5 +194,5 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
             .apply(lambda row: hash(row['Признак 1']) + hash(row['Признак 2']), axis=1).drop_duplicates().index
 
         print("\n\n\033[1mСписок корреляций больших 0.7\033[0m")
-        display(HTML(t.iloc[indexes].sort_values(by='r', ascending=False)\
+        display(HTML(t.iloc[indexes].sort_values(by='r', ascending=False).head()\
                      .style.applymap(colored_values, subset='r').render()))

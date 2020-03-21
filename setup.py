@@ -5,7 +5,9 @@ with open("README.md", "r") as fh:
 
 setup(
      name='data-view',  
-     version='0.1.1',
+     version='0.2.0',
+     download='https://github.com/urevoleg/data-view',
+     download_url='https://github.com/urevoleg/data-view/archive/0.2.0.tar.gz',
      author="Urev Oleg",
      author_email="urevolegg@gmail.com",
      description="Automated view of dataset",

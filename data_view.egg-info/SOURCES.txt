@@ -1,0 +1,10 @@
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+data_view/__init__.py
+data_view.egg-info/PKG-INFO
+data_view.egg-info/SOURCES.txt
+data_view.egg-info/dependency_links.txt
+data_view.egg-info/requires.txt
+data_view.egg-info/top_level.txt

@@ -47,9 +47,14 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
     # объединяем первые 5 и последние 5 строк данных и выводим
     display(HTML(pd.concat([d.head(), d.tail()]).to_html()))
 
-    print("\n\033[1mТипы данных и кол-во непустых строк\033[0m")
+    print("\n\033[1mТипы данных и кол-во уникальных типов\033[0m")
     splitter()
-    display(HTML(pd.DataFrame(d.info()).to_html()))
+    tmp = pd.DataFrame(
+        data=[(col, df[col].dtypes, df[col].map(type).nunique(), df[col].map(type).unique().tolist()) for col in
+              df.columns],
+        columns=['Название столбца', 'Тип данных', 'Кол-во типов данных', 'Список типов данных']) \
+        .set_index('Название столбца')
+    display(HTML(tmp.to_html()))
 
     print("\n\033[1mНаличие дат (месяц, год, день) или id в названиях столбцов\033[0m")
     splitter()

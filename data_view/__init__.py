@@ -50,8 +50,8 @@ def view(d, only_numeric=True, full_stats=False, histograms=True):
     print("\n\033[1mТипы данных и кол-во уникальных типов\033[0m")
     splitter()
     tmp = pd.DataFrame(
-        data=[(col, df[col].dtypes, df[col].map(type).nunique(), df[col].map(type).unique().tolist()) for col in
-              df.columns],
+        data=[(col, d[col].dtypes, d[col].map(type).nunique(), d[col].map(type).unique().tolist()) for col in
+              d.columns],
         columns=['Название столбца', 'Тип данных', 'Кол-во типов данных', 'Список типов данных']) \
         .set_index('Название столбца')
     display(HTML(tmp.to_html()))
